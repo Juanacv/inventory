@@ -24,4 +24,3 @@ if (isset($_SESSION['user'])) {
     $next = $currentPage + 1;
     $prev = $currentPage - 1;  
 }
-

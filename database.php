@@ -1,5 +1,6 @@
 <?php
 require_once "opts.php";
+require_once "helpers.php";
 function createConnection($connectionData) {
     $connection = new mysqli($connectionData["host"], $connectionData["dbUser"], $connectionData["dbPassword"], $connectionData["db"]);
     if ($connection->connect_error) {
@@ -55,9 +56,7 @@ function setConsole($connection, $consoleName, $maker, $price, $image, $comment,
     $stmt->close();
 }
 function updateConsoleData($connection, $consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id, $oldImage) {
-    if (file_exists(CONSOLESDIR.$oldImage)) {
-        unlink(CONSOLESDIR.$oldImage);
-    }
+    deleteImage(CONSOLESDIR.$oldImage);
     $sql = "UPDATE consoles SET consolename=?, maker=?, price=?, image=?, comment=?, dateadquisition=? WHERE id = ?";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param('ssdsssi',$consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id);

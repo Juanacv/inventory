@@ -120,3 +120,10 @@ function uploadFile($uploadDir) {
         return FILERROR;
     }  
 }
+function deleteImage($image) {
+    if (file_exists($image)) {
+        unlink($image);
+        return 1;
+    }
+    return 0;
+}

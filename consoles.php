@@ -21,6 +21,7 @@ require_once "session.php";
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <?php if (!empty($profile)) {
             include "processconsolelist.php";
+            include "deleteconsole.php";
         ?>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
@@ -191,7 +192,7 @@ require_once "session.php";
                                                     <a href="http://localhost/inventario/dist/formconsole.php?console=<?php echo $row['id']; ?>" class="text-indigo-600 hover:text-indigo-900">Editar</a></td>
                                                     <td
                                                     class="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200">
-                                                    <a href="http://localhost/inventario/dist/procesconsole.php?delete=<?php echo $row['id']; ?>" class="text-red-600 hover:text-indigo-900" id="delete">Borrar</a></td>                                                    
+                                                    <a href="http://localhost/inventario/dist/consoles.php?delete=<?php echo $row['id']; ?>&image=<?php echo $row['image'];?>" class="text-red-600 hover:text-indigo-900" id="delete">Borrar</a></td>                                                    
                                             </tr>
                                             <?php } 
                                             $connection->close();?>
@@ -214,19 +215,21 @@ require_once "session.php";
         <?php } ?>
     </div>
     <script type="application/javascript">
-        // Seleccionamos el enlace por su ID
-        var enlace = document.getElementById('delete');
+        window.onload = function() {
+            // Seleccionamos el enlace por su ID
+            var enlace = document.getElementById('delete');
 
-        // Añadimos un event listener para el evento 'click'
-        enlace.addEventListener('click', function(event) {
-            // Mostramos un cuadro de confirmación
-            var confirmacion = confirm("¿Estás seguro de que quieres borrar esta entrada? Será irreversible");
+            // Añadimos un event listener para el evento 'click'
+            enlace.addEventListener('click', function(event) {
+                // Mostramos un cuadro de confirmación
+                var confirmacion = confirm("¿Estás seguro de que quieres borrar esta entrada? Será irreversible");
 
-            // Si el usuario no confirma, prevenimos la acción por defecto (seguir el enlace)
-            if (!confirmacion) {
-                event.preventDefault();
-            }
-        });
+                // Si el usuario no confirma, prevenimos la acción por defecto (seguir el enlace)
+                if (!confirmacion) {
+                    event.preventDefault();
+                }
+            });
+        }
     </script>
 </body>
 </html>
