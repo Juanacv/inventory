@@ -148,4 +148,11 @@ function getLastConsoleAdquisition($connection, $ownerId) {
     $row = $result->fetch_array();
     return date('d-m-Y',strtotime($row[0]));
 }
+function deleteConsole($connection, $consoleId, $ownerId) {
+    $sql = "DELETE FROM consoles WHERE id = ? AND owner_id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param('ii',$consoleId, $ownerId);
+    $stmt->execute();
+    $stmt->close();
+}
 ?>

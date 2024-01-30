@@ -152,6 +152,7 @@ require_once "session.php";
                                                     Fecha Adquisición</th>
                                                 <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
                                                 <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+                                                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
                                             </tr>
                                         </thead>
         
@@ -181,15 +182,16 @@ require_once "session.php";
                                                 <td
                                                     class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                                                     <?php echo date('d-m-Y',strtotime($row['dateadquisition']));?></td>
+                                                <td
+                                                    class="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200">
+                                                    <a href="http://localhost/inventario/dist/viewconsole.php?console=<?php echo $row['id']; ?>" class="text-indigo-600 hover:text-indigo-900">Ver</a>  
         
                                                 <td
                                                     class="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200">
-                                                    <a href="http://localhost/inventario/dist/viewconsole.php?console=<?php echo $row['id']; ?>" class="text-indigo-600 hover:text-indigo-900">Ver</a>
-        
-                                                <td
+                                                    <a href="http://localhost/inventario/dist/formconsole.php?console=<?php echo $row['id']; ?>" class="text-indigo-600 hover:text-indigo-900">Editar</a></td>
+                                                    <td
                                                     class="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200">
-                                                    <a href="http://localhost/inventario/dist/formconsole.php?console=<?php echo $row['id']; ?>" class="text-indigo-600 hover:text-indigo-900">Editar</a>
-                                                </td>
+                                                    <a href="http://localhost/inventario/dist/procesconsole.php?delete=<?php echo $row['id']; ?>" class="text-red-600 hover:text-indigo-900" id="delete">Borrar</a></td>                                                    
                                             </tr>
                                             <?php } 
                                             $connection->close();?>
@@ -211,5 +213,20 @@ require_once "session.php";
             </div>
         <?php } ?>
     </div>
+    <script type="application/javascript">
+        // Seleccionamos el enlace por su ID
+        var enlace = document.getElementById('delete');
+
+        // Añadimos un event listener para el evento 'click'
+        enlace.addEventListener('click', function(event) {
+            // Mostramos un cuadro de confirmación
+            var confirmacion = confirm("¿Estás seguro de que quieres borrar esta entrada? Será irreversible");
+
+            // Si el usuario no confirma, prevenimos la acción por defecto (seguir el enlace)
+            if (!confirmacion) {
+                event.preventDefault();
+            }
+        });
+    </script>
 </body>
 </html>

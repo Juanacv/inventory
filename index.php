@@ -21,7 +21,7 @@ if (isset($_POST['sent'])) {
     $id = getId($connection, $username);
     $_SESSION['user'] = base64_encode($id);
     $connection->close();
-    // Redirigir al usuario al registro
+    // Redirigir al usuario al listado de consolas
     header('Location: http://localhost/inventario/dist/consoles.php');
     exit(); // Es importante llamar a exit después de una redirección
   }

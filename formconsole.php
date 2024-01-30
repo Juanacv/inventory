@@ -21,7 +21,7 @@ require_once "opts.php";
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <?php if (!empty($profile)) {
             $portrait = PORTRAITSDIR.$profile['portrait'];
-            include "proccessconsole.php";           
+            include "processconsole.php";           
             if (!empty($_POST)) {
                 $row['consolename'] = $_POST['consolename'];
                 $row['price'] = $_POST['price'];

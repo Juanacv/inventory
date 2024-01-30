@@ -38,9 +38,23 @@ if (isset($_POST['consolename']) && isset($_SESSION['user'])) {
         exit(); // Es importante llamar a exit después de una redirección        
     }
 }
+if (isset($_GET['delete']) && isset($_SESSION['user'])) {
+    $connection = createConnection($connectionData);
+    $consoleId = intval($_GET['delete']);
+    $ownerId = intval(base64_decode($_SESSION['use']));
+    deleteConsole($connection, $consoleId, $ownerId);
+    $connection->close();
+    // Redirigir al usuario al listado de consolas
+    header('Location: http://localhost/inventario/dist/consoles.php');
+    exit(); // Es importante llamar a exit después de una redirección    
+}
 if (isset($_GET['console'])) {
     $connection = createConnection($connectionData);
     $row = getConsoleById($connection, intval($_GET['console']));
+    $profile = array();
+    if (strpos($_SERVER['PHP_SELF'],'view') !== FALSE) {
+        $profile = getProfile($connection, $row['owner_id']);
+    }
     $connection->close();
 }
 ?>
