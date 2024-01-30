@@ -32,8 +32,13 @@ define('PAGESPERPAGINATION',5);
 define('PORTRAITS',0);
 define('CONSOLES',1);
 define('VIDEOGAMES',1);
-$connectionData = ["host"=>"localhost","dbUser"=>"root","dbPassword"=>"root","db"=>"inventory"];
+define('CONSOLE',0);
+define('FORMCONSOLE',1);
 
+$connectionData = ["host"=>"localhost","dbUser"=>"root","dbPassword"=>"root","db"=>"inventory"];
+$forms = [CONSOLE =>
+    ["formconsole.php","consola"]
+];
 $messages = [
     "username" => "",
     "password" => "",
