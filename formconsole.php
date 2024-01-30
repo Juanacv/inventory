@@ -5,7 +5,7 @@ require_once "session.php";
 require_once "opts.php";
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,8 +21,14 @@ require_once "opts.php";
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <?php if (!empty($profile)) {
             $portrait = PORTRAITSDIR.$profile['portrait'];
-            include "proccessconsole.php";            
-            if (!empty($_POST)) $row = $_POST;
+            include "proccessconsole.php";           
+            if (!empty($_POST)) {
+                $row['consolename'] = $_POST['consolename'];
+                $row['price'] = $_POST['price'];
+                $row['maker'] = $_POST['maker'];
+                $row['dateadquisition'] = $_POST['dateadquisition'];
+                $row['comment'] = $_POST['comment'];
+            } 
         ?>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
@@ -107,7 +113,6 @@ require_once "opts.php";
                                                 <p class="text-red-500 text-xs italic"><?php echo $messages["comment"]; ?></p>                                                
                                             </div>
                                         </div>
-                                        <input type="hidden" name="owner_id" id="owner_id" value="<?php echo $profile['ownerIdEncoded'];?>">
                                         <?php if (isset($row['id'])) { ?><input type="hidden" name="consoleid" value="<?php echo $row['id']; ?>"><?php } ?>
                                         <div class="flex items-center justify-between">
                                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">

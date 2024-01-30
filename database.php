@@ -30,10 +30,10 @@ function getId($connection, $username) {
     $stmt->close();
     return $id;    
 }
-function getProfile($connection, $id) {
+function getProfile($connection, $ownerId) {
     $sql = "SELECT username, portrait FROM users where id = ?";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param('i',$id);
+    $stmt->bind_param('i',$ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
@@ -47,10 +47,10 @@ function setUser($connection, $username, $hash, $portrait) {
     $stmt->execute();
     $stmt->close();
 }
-function setConsole($connection, $consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id) {
+function setConsole($connection, $consoleName, $maker, $price, $image, $comment, $dateAdquisition, $ownerId) {
     $sql = "INSERT INTO consoles (consolename, maker, price, image, comment, dateadquisition, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param('ssdsssi',$consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id);
+    $stmt->bind_param('ssdsssi',$consoleName, $maker, $price, $image, $comment, $dateAdquisition, $ownerId);
     $stmt->execute();
     $stmt->close();
 }
@@ -76,10 +76,10 @@ function checkIfUserExists($connection, $username) {
     if ($count !== 0) return EXISTERROR;
     return NOERROR;
 }
-function checkIfConsoleExists($connection, $consolename, $ownerIdDecoded) {
+function checkIfConsoleExists($connection, $consolename, $ownerId) {
     if (empty($consolename)) return EMPTYERROR;
     $stmt = $connection->prepare("SELECT count(*) FROM consoles where consolename = ? and owner_id = ?");
-    $stmt->bind_param("si", $consolename, $ownerIdDecoded);
+    $stmt->bind_param("si", $consolename, $ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_array();
@@ -88,10 +88,9 @@ function checkIfConsoleExists($connection, $consolename, $ownerIdDecoded) {
     if ($count !== 0) return EXISTERROR;
     return NOERROR;
 }
-function countConsoles($connection, $ownerIdEncoded) {
+function countConsoles($connection, $ownerId) {
     $stmt = $connection->prepare("SELECT count(*) FROM consoles where owner_id = ?");
-    $id = base64_decode($ownerIdEncoded);
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("i", $ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_array();
@@ -99,7 +98,7 @@ function countConsoles($connection, $ownerIdEncoded) {
     $stmt->close();
     return $count;
 }
-function getConsolesPagination($connection, $ownerIdEncoded, $init, $search = '') {
+function getConsolesPagination($connection, $ownerId, $init, $search = '') {
     $sql = "SELECT id, consolename, maker, price, image, dateadquisition FROM consoles where owner_id = ?";
     if (!empty($search)) {
         $tmp = " AND (consolename LIKE ? OR maker LIKE ?)";
@@ -108,9 +107,8 @@ function getConsolesPagination($connection, $ownerIdEncoded, $init, $search = ''
     }
     $sql .= " LIMIT $init, ".ITEMSPERPAGE;
     $stmt = $connection->prepare($sql);
-    $id = base64_decode($ownerIdEncoded);
-    if (!empty($search)) $stmt->bind_param("iss", $id, $search, $search);
-    else $stmt->bind_param("i", $id);
+    if (!empty($search)) $stmt->bind_param("iss", $ownerId, $search, $search);
+    else $stmt->bind_param("i", $ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
     return $result;
@@ -122,10 +120,9 @@ function getConsoleById($connection, $consoleId) {
     $result = $stmt->get_result();
     return $result->fetch_assoc();
 }
-function getSumPricesConsoles($connection, $ownerIdEncoded) {
+function getSumPricesConsoles($connection, $ownerId) {
     $stmt = $connection->prepare("SELECT sum(price) FROM consoles where owner_id = ?");
-    $id = base64_decode($ownerIdEncoded);
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("i", $ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_array();
@@ -143,10 +140,9 @@ function countUsersWithSameConsole($connection, $consoleName) {
     $stmt->close();
     return $count;
 }
-function getLastConsoleAdquisition($connection, $ownerIdEncoded) {
+function getLastConsoleAdquisition($connection, $ownerId) {
     $stmt = $connection->prepare("SELECT dateadquisition FROM consoles where owner_id = ? ORDER BY dateadquisition DESC LIMIT 1");
-    $id = base64_decode($ownerIdEncoded);
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("i", $ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_array();

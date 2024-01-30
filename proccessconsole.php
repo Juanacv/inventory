@@ -1,9 +1,9 @@
 <?php
-if (isset($_POST['owner_id'])) {
+if (isset($_POST['consolename']) && isset($_SESSION['user'])) {
     $consoleName = filtering($_POST['consolename']);
     $comment = filtering($_POST['comment']);
     $maker = filtering($_POST['maker']);
-    $id = base64_decode($_POST['owner_id']);
+    $id = base64_decode($_SESSION['user']);
     $result = validateComment($comment);
     if (isset($commentErrors[$result])) $messages['comment'] = $commentErrors[$result];
     $price = $_POST['price'];
@@ -41,5 +41,6 @@ if (isset($_POST['owner_id'])) {
 if (isset($_GET['console'])) {
     $connection = createConnection($connectionData);
     $row = getConsoleById($connection, intval($_GET['console']));
+    $connection->close();
 }
 ?>

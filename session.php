@@ -7,7 +7,6 @@ function checkSession($connectionData) {
         $connection = createConnection($connectionData);
         $profile = getProfile($connection, $id);
         $connection->close();
-        $profile['ownerIdEncoded'] = $_SESSION['user'];
     }
     return $profile;
 }

@@ -32,7 +32,7 @@
                 class="relative block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none">
                 <img class="object-cover w-full h-full"
                     src="getimages.php?image=<?php echo $portrait;?>&type=<?php echo PORTRAITS;?>"
-                    alt="avatar">
+                    alt="<?php echo $profile['username'];?>" title="<?php echo $profile['username'];?>">
             </button>
 
             <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 z-10 w-full h-full"

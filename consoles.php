@@ -5,7 +5,7 @@ require_once "helpers.php";
 require_once "session.php";
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -184,7 +184,7 @@ require_once "session.php";
         
                                                 <td
                                                     class="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">Ver</a>
+                                                    <a href="http://localhost/inventario/dist/viewconsole.php?console=<?php echo $row['id']; ?>" class="text-indigo-600 hover:text-indigo-900">Ver</a>
         
                                                 <td
                                                     class="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200">
