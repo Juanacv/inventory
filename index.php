@@ -45,7 +45,7 @@ if (isset($_POST['sent'])) {
     <body>
     <div class="w-screen flex mt-3 items-center justify-center">
       <form class="bg-gray-400 shadow-md rounded px-8 pt-6 pb-8 mb-4 min-w-96"  method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
-        <?php if (isset($_GET['error'])) { ?> <p class="text-red-500 text-xs italic pt-1">¿Seguro que estás registrado? No se ha encontrado tu perfil.</p><?php } ?>
+        <?php if (isset($_GET['error'])) { ?> <p class="text-red-500 text-xs italic pt-1 pb-1">¿Seguro que estás registrado? No se ha encontrado tu perfil.</p><?php } ?>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
             Nombre de usuario
