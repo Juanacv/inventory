@@ -14,7 +14,7 @@ require_once "opts.php";
 	<link href="./css/output.css" rel="stylesheet">  
 </head>
 <body class="flex items-center justify-center h-screen">
-    <?php include "processconsole.php"; ?>  
+    <?php include_once "processconsole.php"; ?>  
     <span class="p-8 max-w-lg border border-indigo-300 rounded-2xl hover:shadow-xl hover:shadow-indigo-50 flex flex-col items-center"
     href="#">
         <img src="getimages.php?image=<?php echo $row['image'];?>&type=<?php echo CONSOLES;?>" alt="<?php echo $row['consolename'];?>" title="<?php echo $row['consolename'];?>" class="shadow rounded-lg overflow-hidden border" >

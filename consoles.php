@@ -20,8 +20,8 @@ require_once "session.php";
     <div class="w-full">
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <?php if (!empty($profile)) {
-            include "processconsolelist.php";
-            include "deleteconsole.php";
+            include_once "processconsolelist.php";
+            include_once "deleteconsole.php";
         ?>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
@@ -40,12 +40,12 @@ require_once "session.php";
                 <?php $_SESSION['highlight'] = CONSOLE; 
                 $_SESSION['urlform'] = $forms[CONSOLE][0];
                 $_SESSION['tagform'] = $forms[CONSOLE][1];
-                include "navside.php"; ?>                
+                include_once "navside.php"; ?>                
             </div>
             <div class="flex flex-col flex-1 overflow-hidden">
                 <?php 
                 $_SESSION['nosearch'] = 1;
-                include "header.php"; ?>
+                include_once "header.php"; ?>
                 <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     <div class="container px-6 py-8 mx-auto">
                         <h3 class="text-3xl font-medium text-gray-700">Inventario</h3>
@@ -199,20 +199,16 @@ require_once "session.php";
                                         </tbody>
                                     </table>
                                 </div>
-                                <?php include "pagination.php" ?>              
+                                <?php include_once "pagination.php" ?>              
                             </div>
                         </div>
                     </div>
                 </main>
             </div>
         </div>
-        <?php } else { ?>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">¡Error!</strong>
-                <span class="block sm:inline">Parece que no estás logueado.</span>
-                <a href="http://localhost/inventario/dist/index.php">Volver al login</a>
-            </div>
-        <?php } ?>
+        <?php } else { 
+            include_once "error.php";
+        } ?>
     </div>
     <script type="application/javascript">
         window.onload = function() {

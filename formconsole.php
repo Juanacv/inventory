@@ -21,7 +21,7 @@ require_once "opts.php";
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <?php if (!empty($profile)) {
             $portrait = PORTRAITSDIR.$profile['portrait'];
-            include "processconsole.php";           
+            include_once "processconsole.php";           
             if (!empty($_POST)) {
                 $row['consolename'] = $_POST['consolename'];
                 $row['price'] = $_POST['price'];
@@ -47,12 +47,12 @@ require_once "opts.php";
                 <?php  $_SESSION['highlight'] = FORMCONSOLE; 
                 $_SESSION['urlform'] = $forms[CONSOLE][0];
                 $_SESSION['tagform'] = $forms[CONSOLE][1];
-                include "navside.php"; ?> 
+                include_once "navside.php"; ?> 
             </div>
             <div class="flex flex-col flex-1 overflow-hidden">
                 <?php 
                 $_SESSION['nosearch'] = 0;
-                include "header.php"; ?>
+                include_once "header.php"; ?>
                 <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     <div class="container px-6 py-8 mx-auto">
                         <h3 class="text-3xl font-medium text-gray-700">Añadir consola</h3>
@@ -127,13 +127,9 @@ require_once "opts.php";
                 </main>
             </div>
         </div>
-        <?php } else { ?>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">¡Error!</strong>
-                <span class="block sm:inline">Parece que no estás logueado.</span>
-                <a href="http://localhost/inventario/dist/index.php">Volver al login</a>
-            </div>
-        <?php } ?>
+        <?php } else { 
+            include_once "error.php";
+        } ?>
     </div>
 </body>
 </html>
