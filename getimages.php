@@ -29,6 +29,9 @@ if (file_exists($completeRoute)) {
         case 'png':
             header('Content-Type: image/png');
             break;
+        case 'svg':
+            header('Content-Type: image/svg+xml');
+            break;
         // Añadir más formatos si es necesario
     }
 

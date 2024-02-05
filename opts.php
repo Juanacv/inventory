@@ -22,7 +22,7 @@ define('MAXPRICEERROR',3);
 define('INVALIDDATE',2);
 define('PORTRAITSDIR','uploads/portraits/');
 define('CONSOLESDIR','uploads/consoles/');
-define('IMAGEEXTENSIONS',array("jpg", "jpeg", "png"));
+define('IMAGEEXTENSIONS',array("jpg", "jpeg", "png", "svg"));
 define('MAXWIDTHPX',1000);
 define('MAXHEIGTHPX',1000);
 define('MAXCOMMENTLENGTH',500);
@@ -34,6 +34,7 @@ define('CONSOLES',1);
 define('VIDEOGAMES',1);
 define('CONSOLE',0);
 define('FORMCONSOLE',1);
+define('GENRE',2);
 
 $connectionData = ["host"=>"localhost","dbUser"=>"root","dbPassword"=>"root","db"=>"inventory"];
 $forms = [CONSOLE =>

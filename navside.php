@@ -24,8 +24,8 @@
         <span class="mx-3">Videojuegos</span>
     </a>
 
-    <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-        href="#">
+    <a class="flex items-center px-6 py-2 mt-4 <?php if ($highlight == GENRE) { ?> text-gray-100 bg-gray-700 bg-opacity-25 <?php } else { ?> text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 <?php } ?>"
+        href="http://localhost/inventario/dist/genres.php">
         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

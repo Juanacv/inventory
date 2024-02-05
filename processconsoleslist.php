@@ -15,6 +15,7 @@ if (isset($_SESSION['user'])) {
     if (isset($_GET['search'])) {
         $search = $_GET['search'];
     }  
+    $search = filtering($search);
     $results = getConsolesPagination($connection, base64_decode($_SESSION['user']),$init, $search);
 
     $currentPage = max($currentPage, 1); // Asegura que $currentPage sea al menos 1

@@ -20,7 +20,7 @@ require_once "session.php";
     <div class="w-full">
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <?php if (!empty($profile)) {
-            include_once "processconsolelist.php";
+            include_once "processconsoleslist.php";
             include_once "deleteconsole.php";
         ?>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">

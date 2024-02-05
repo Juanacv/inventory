@@ -112,6 +112,20 @@ function getConsolesPagination($connection, $ownerId, $init, $search = '') {
     $result = $stmt->get_result();
     return $result;
 }
+function getGenres($connection, $search = '') {
+    $sql = "SELECT id, genre, icon FROM genres WHERE 1=1";
+    if (!empty($search)) {
+        $tmp = " AND (genre LIKE ?)";
+        $search = "%".$search."%";
+        $sql .= $tmp;
+    }    
+    $sql .= " ORDER BY genre";
+    $stmt = $connection->prepare($sql);
+    if (!empty($search)) $stmt->bind_param("s", $search);    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+}
 function getConsoleById($connection, $consoleId) {
     $stmt = $connection->prepare("SELECT * FROM consoles where id = ?");
     $stmt->bind_param("i", $consoleId);

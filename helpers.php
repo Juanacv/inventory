@@ -9,7 +9,7 @@ function filtering($input) {
 function filteringImages($input) {
     $input = basename($input); // Elimina cualquier ruta de directorio
     // Lista blanca de extensiones de archivo permitidas
-    $allowedExtensions = ['jpg', 'jpeg', 'png'];
+    $allowedExtensions = IMAGEEXTENSIONS;
     // Comprobar la extensión del archivo
     $extension = strtolower(pathinfo($input, PATHINFO_EXTENSION));
     if (!in_array($extension, $allowedExtensions)) {
