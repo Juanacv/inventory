@@ -75,7 +75,7 @@ require_once "profile.php";
                                         </div>
         
                                         <div class="mx-5">
-                                            <h4 class="text-2xl font-semibold text-gray-700"><?php echo $results->num_rows; ?></h4>
+                                            <h4 class="text-2xl font-semibold text-gray-700"><?php echo $totalGenres; ?></h4>
                                             <div class="text-gray-500">Total géneros</div>
                                         </div>
                                     </div>
@@ -96,7 +96,7 @@ require_once "profile.php";
                                         id="infinte-scroll"
                                         data-te-infinite-scroll-init
                                         class="h-[261px] w-80 overflow-y-scroll p-1">
-                                            <?php while ($row = $results->fetch_assoc()) {?>
+                                            <?php while ($row = $resultsGenres->fetch_assoc()) {?>
                                                 <li class="mr-2 flex items-center border dark:border-neutral-600">
                                                     <span class="mx-2 py-1 [&>img]:w-10"
                                                     >                                                            <img class="w-10 h-10 rounded-full"

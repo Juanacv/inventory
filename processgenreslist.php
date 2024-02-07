@@ -6,5 +6,6 @@ if (isset($_SESSION['user'])) {
         $search = $_GET['search'];
     } 
     $search = filtering($search);
-    $results = getGenres($connection, $search);
+    $totalGenres = countGenres($connection);
+    $resultsGenres = getGenres($connection, $search);
 }

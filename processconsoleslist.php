@@ -15,10 +15,10 @@ if (isset($_SESSION['user'])) {
         $search = $_GET['search'];
     }  
     $search = filtering($search);
-    $results = getConsolesPagination($connection, base64_decode($_SESSION['user']),$init, $search);
+    $resultsConsoles = getConsolesPagination($connection, base64_decode($_SESSION['user']),$init, $search);
 
     $currentPage = max($currentPage, 1); // Asegura que $currentPage sea al menos 1
-    $realConsolesShowed = $results->num_rows;
+    $realConsolesShowed = $resultsConsoles->num_rows;
     $totalPages = ceil($realConsolesShowed/ITEMSPERPAGE);
     $currentPage = min($currentPage, $totalPages);
     $next = $currentPage + 1;

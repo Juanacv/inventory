@@ -99,7 +99,7 @@ $repasswordErrors = [
 $imageErrors = [
     "",
     "Error al subir el archivo",
-    "Las extensiones válidas son jpeg, jpg, y png",
+    "Las extensiones válidas son jpeg, jpg, svg, y png",
     "El archivo no debe superar los 1.5Mb",
     "El archivo no pude superar los 1000x1000px"
 ];

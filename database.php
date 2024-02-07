@@ -114,6 +114,15 @@ function countConsoles($connection, $ownerId) {
     $stmt->close();
     return $count;
 }
+function countGenres($connection) {
+    $stmt = $connection->prepare("SELECT count(*) FROM genres");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_array();
+    $count = intval($row[0]);
+    $stmt->close();
+    return $count;
+}
 function getConsolesPagination($connection, $ownerId, $init, $search = '') {
     $sql = "SELECT id, consolename, maker, price, image, dateadquisition FROM consoles where owner_id = ?";
     if (!empty($search)) {
