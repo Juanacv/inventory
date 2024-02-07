@@ -12,7 +12,9 @@ if ($type == CONSOLES) {
 if ($type == PORTRAITS) {
     $route = PORTRAITSDIR;
 }
-
+if ($type == GENRES) {
+    $route = GENRESDIR;
+}
 // Crear la ruta completa
 $completeRoute = $route . $image;
 

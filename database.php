@@ -188,7 +188,7 @@ function deleteConsole($connection, $consoleId, $ownerId) {
 function deleteGenre($connection, $consoleId) {
     $sql = "DELETE FROM genres WHERE id = ?";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param('ii',$consoleId);
+    $stmt->bind_param('i',$consoleId);
     $stmt->execute();
     $stmt->close();
 }

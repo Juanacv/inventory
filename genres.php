@@ -18,6 +18,7 @@ require_once "profile.php";
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <?php      
             include_once "processgenreslist.php";    
+            include_once "processgenre.php";
             include_once "deletegenre.php";
         ?>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
@@ -98,7 +99,9 @@ require_once "profile.php";
                                             <?php while ($row = $results->fetch_assoc()) {?>
                                                 <li class="mr-2 flex items-center border dark:border-neutral-600">
                                                     <span class="mx-2 py-1 [&>img]:w-10"
-                                                    ><img class="w-10 h-10 rounded-full" src="getimages.php?image=strategy-game-svgrepo-com31.svg&amp;type=1" alt="testsvg" title="testsvg">
+                                                    >                                                            <img class="w-10 h-10 rounded-full"
+                                                                src="getimages.php?image=<?php echo $row['image'];?>&type=<?php echo GENRES;?>"
+                                                                alt="<?php echo $row['genre'];?>" title="<?php echo $row['genre'];?>">
                                                     </span>
                                                     <span class="mx-2 py-1 w-36"><?php echo $row['genre']; ?></span>
                                                     <span class="mx-4 py-1 [&>a]:w-8"
@@ -109,12 +112,12 @@ require_once "profile.php";
                                             $connection->close();?>
                                     </ul>
                                     <div class="pt-1">
-                                        <form class="w-full max-w-lg p-1" action="<?php echo $_SERVER['PHP_SELF'];?>" enctype="multipart/form-data" method="POST">
-                                            <div class="flex flex-row items-center w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                        <form class="w-full p-1" action="<?php echo $_SERVER['PHP_SELF'];?>" enctype="multipart/form-data" method="POST">
+                                            <div class="flex flex-row items-center w-full lg:w-1/2 px-3 mb-6 md:mb-0">
                                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="genre">
                                                 Género
                                             </label>
-                                            <input class="appearance-none block mx-2 w-54 bg-gray-200 text-gray-700 border <?php if (!empty($messages["genre"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" id="genre" name="consolename" value="<?php echo isset($row['genre']) ? $row['genre'] : "";?>" type="text" placeholder="Estrategia">
+                                            <input class="appearance-none block mx-2 w-54 bg-gray-200 text-gray-700 border <?php if (!empty($messages["genre"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" id="genre" name="genre" value="<?php echo isset($row['genre']) ? $row['genre'] : "";?>" type="text" placeholder="Estrategia">
                                             <p class="text-red-500 text-xs italic"><?php echo $messages['genre'] ?></p>
                                             <?php include_once "imageinput.php" ?>
                                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
@@ -133,10 +136,6 @@ require_once "profile.php";
             </div>
         </div>
     </div>
-    <script type="application/javascript">
-        window.onload = function() {
-           console.log("loaded");
-        }
-    </script>
+    <script type="application/javascript" src="./js/delete.js"></script>
 </body>
 </html>

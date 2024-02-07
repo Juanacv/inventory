@@ -1,4 +1,4 @@
-<?php
+<?php  
 if (isset($_POST['genre']) && isset($_SESSION['user'])) {
     $genre = filtering($_POST['genre']);
     $result = validateGenre($genre);
