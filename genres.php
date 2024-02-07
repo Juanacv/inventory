@@ -1,8 +1,9 @@
 <?php
 require_once "opts.php";
-require_once "database.php";
 require_once "helpers.php";
+require_once "database.php";
 require_once "session.php";
+require_once "profile.php";
 ?>
 <!doctype html>
 <html lang="es">
@@ -10,18 +11,14 @@ require_once "session.php";
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.tailwindcss.com"></script>
 	<link href="./css/output.css" rel="stylesheet">
 </head>
 <body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
-    <?php 
-        $profile = checkSession($connectionData);
-    ?>
     <div class="w-full">
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-        <?php if (!empty($profile)) {
-            include_once "processgenreslist.php";
-            //include_once "deleteconsole.php";
+        <?php      
+            include_once "processgenreslist.php";    
+            include_once "deletegenre.php";
         ?>
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
@@ -37,7 +34,7 @@ require_once "session.php";
                         <span class="mx-2 text-2xl font-semibold text-white">Inventario</span>
                     </div>
                 </div>
-                <?php $_SESSION['highlight'] = GENRE; 
+                <?php $_SESSION['highlight'] = GENRES; 
                 include_once "navside.php"; ?>                
             </div>
             <div class="flex flex-col flex-1 overflow-hidden">
@@ -94,22 +91,48 @@ require_once "session.php";
                             <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                                 <div
                                     class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-
+                                    <ul
+                                        id="infinte-scroll"
+                                        data-te-infinite-scroll-init
+                                        class="h-[261px] w-80 overflow-y-scroll p-1">
                                             <?php while ($row = $results->fetch_assoc()) {?>
-
+                                                <li class="mr-2 flex items-center border dark:border-neutral-600">
+                                                    <span class="mx-2 py-1 [&>img]:w-10"
+                                                    ><img class="w-10 h-10 rounded-full" src="getimages.php?image=strategy-game-svgrepo-com31.svg&amp;type=1" alt="testsvg" title="testsvg">
+                                                    </span>
+                                                    <span class="mx-2 py-1 w-36"><?php echo $row['genre']; ?></span>
+                                                    <span class="mx-4 py-1 [&>a]:w-8"
+                                                    ><a href="http://localhost/inventario/dist/genres.php?delete=<?php echo $row['id'] ?>&image=<?php echo $row['image']?>" class="text-red-600 hover:text-indigo-900" id="delete" alt="borrar" title="borrar">X</a>        
+                                                    </span>                                            
+                                                </li>
                                             <?php } 
                                             $connection->close();?>
+                                    </ul>
+                                    <div class="pt-1">
+                                        <form class="w-full max-w-lg p-1" action="<?php echo $_SERVER['PHP_SELF'];?>" enctype="multipart/form-data" method="POST">
+                                            <div class="flex flex-row items-center w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="genre">
+                                                Género
+                                            </label>
+                                            <input class="appearance-none block mx-2 w-54 bg-gray-200 text-gray-700 border <?php if (!empty($messages["genre"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" id="genre" name="consolename" value="<?php echo isset($row['genre']) ? $row['genre'] : "";?>" type="text" placeholder="Estrategia">
+                                            <p class="text-red-500 text-xs italic"><?php echo $messages['genre'] ?></p>
 
+    
+                                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                                            Añadir
+                                            </button>       
+                                           
+                                            </div>                       
+                                        </form>
+                                    </div>
                                 </div>           
                             </div>
                         </div>
+
                     </div>
                 </main>
             </div>
         </div>
-        <?php } else { 
-            include_once "error.php";
-        } ?>
     </div>
     <script type="application/javascript">
         window.onload = function() {

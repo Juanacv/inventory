@@ -1,6 +1,5 @@
 <?php
 if (isset($_SESSION['user'])) {
-    $portrait = PORTRAITSDIR.$profile['portrait'];
     $connection = createConnection($connectionData);
     $countConsoles = countConsoles($connection, base64_decode($_SESSION['user']));
     $sumConsoles = getSumPricesConsoles($connection, base64_decode($_SESSION['user']));

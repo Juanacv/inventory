@@ -3,7 +3,7 @@ define('NOERROR',0);
 define('EMPTYERROR',1);
 define('MINLONGERROR',2);
 define('MAXLONGERROR',3);
-define('EXISTERROR',4);
+define('EXISTSERROR',4);
 define('REPASSWORDERROR',2);
 define('EXTENSIONERROR',2);
 define('WEIGHTERROR',3);
@@ -22,6 +22,7 @@ define('MAXPRICEERROR',3);
 define('INVALIDDATE',2);
 define('PORTRAITSDIR','uploads/portraits/');
 define('CONSOLESDIR','uploads/consoles/');
+define('GENRESDIR','uploads/genres/');
 define('IMAGEEXTENSIONS',array("jpg", "jpeg", "png", "svg"));
 define('MAXWIDTHPX',1000);
 define('MAXHEIGTHPX',1000);
@@ -31,26 +32,27 @@ define('ITEMSPERPAGE',8);
 define('PAGESPERPAGINATION',5);
 define('PORTRAITS',0);
 define('CONSOLES',1);
-define('VIDEOGAMES',1);
-define('CONSOLE',0);
-define('FORMCONSOLE',1);
-define('GENRE',2);
+define('GENRES',2);
+define('VIDEOGAMES',3);
+define('FORMCONSOLE',4);
+define('MAXGENRELENGTH',20);
+define('MINGENRELENGTH',3);
 
 $connectionData = ["host"=>"localhost","dbUser"=>"root","dbPassword"=>"root","db"=>"inventory"];
-$forms = [CONSOLE =>
+$forms = [CONSOLES =>
     ["formconsole.php","consola"]
 ];
 $messages = [
     "username" => "",
     "password" => "",
     "repassword" => "",
-    "portrait" => "",
     "consolename" => "",
     "price" => "",
-    "consoleimage" => "",
+    "image" => "",
     "comment" => "",
     "dateadquisition" => "",
-    "maker" => ""
+    "maker" => "",
+    "genre" => ""
 ];
 $consolenameErrors = [
     "",
@@ -65,9 +67,12 @@ $makerErrors = [
     "La longitud mínima del fabricante debe ser 5",
     "La longitud máxima del fabricante debe ser 50"
 ];
-$commentErrors = [
+$genreErrors = [
     "",
-    "La longitud mínima del comentario no puede ser de 500 caracteres"
+    "El nombre del género no debe estar vacío",
+    "La longitud mínima del nombre del género debe ser 3",
+    "La longitud máxima del nombre del género debe ser 20",
+    "El nombre del género ya existe"
 ];
 $priceErrors = [
     "",

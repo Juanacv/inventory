@@ -1,5 +1,4 @@
 <?php
-require_once "opts.php";
 function filtering($input) {
     $input = trim($input); // Elimina espacios antes y después de los datos
     $input = stripslashes($input); // Elimina backslashes \
@@ -22,6 +21,12 @@ function validateUserName($username) {
     if (empty($username)) return EMPTYERROR;
     if (strlen($username) < MINUSERNAMELENGTH) return MINLONGERROR;
     if (strlen($username) > MAXUSERNAMELENGTH) return MAXLONGERROR;
+    return NOERROR;
+}
+function validateGenre($genre) {
+    if (empty($genre)) return EMPTYERROR;
+    if (strlen($genre) < MINGENRELENGTH) return MINLONGERROR;
+    if (strlen($genre) > MAXGENRELENGTH) return MAXLONGERROR;
     return NOERROR;
 }
 function validateConsoleName($consoleName) {

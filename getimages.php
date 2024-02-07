@@ -1,4 +1,5 @@
 <?php
+require_once "opts.php";
 require_once "helpers.php";
 // Obtener el nombre de la imagen desde la URL, por ejemplo: imagen.php?file=miimagen.jpg
 $image = filteringImages($_GET['image']);

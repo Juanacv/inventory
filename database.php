@@ -1,6 +1,4 @@
 <?php
-require_once "opts.php";
-require_once "helpers.php";
 function createConnection($connectionData) {
     $connection = new mysqli($connectionData["host"], $connectionData["dbUser"], $connectionData["dbPassword"], $connectionData["db"]);
     if ($connection->connect_error) {
@@ -32,7 +30,7 @@ function getId($connection, $username) {
     return $id;    
 }
 function getProfile($connection, $ownerId) {
-    $sql = "SELECT username, portrait FROM users where id = ?";
+    $sql = "SELECT username, image FROM users where id = ?";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param('i',$ownerId);
     $stmt->execute();
@@ -42,7 +40,7 @@ function getProfile($connection, $ownerId) {
     return $row;    
 }
 function setUser($connection, $username, $hash, $portrait) {
-    $sql = "INSERT INTO users (username, hash, portrait, date) VALUES (?, ?, ?, NOW())";
+    $sql = "INSERT INTO users (username, hash, image, date) VALUES (?, ?, ?, NOW())";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param('sss',$username, $hash, $portrait);
     $stmt->execute();
@@ -59,7 +57,14 @@ function updateConsoleData($connection, $consoleName, $maker, $price, $image, $c
     deleteImage(CONSOLESDIR.$oldImage);
     $sql = "UPDATE consoles SET consolename=?, maker=?, price=?, image=?, comment=?, dateadquisition=? WHERE id = ?";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param('ssdsssi',$consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id);
+    $stmt->bind_param('ssdsssi', $consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id);
+    $stmt->execute();
+    $stmt->close();
+}
+function setGenre($connection, $genre, $image) {
+    $sql = "INSERT INTO genres (genre, image) VALUES (?, ?)";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param('ss', $genre, $image);
     $stmt->execute();
     $stmt->close();
 }
@@ -72,7 +77,7 @@ function checkIfUserExists($connection, $username) {
     $row = $result->fetch_array();
     $count = intval($row[0]);
     $stmt->close();
-    if ($count !== 0) return EXISTERROR;
+    if ($count !== 0) return EXISTSERROR;
     return NOERROR;
 }
 function checkIfConsoleExists($connection, $consolename, $ownerId) {
@@ -84,7 +89,19 @@ function checkIfConsoleExists($connection, $consolename, $ownerId) {
     $row = $result->fetch_array();
     $count = intval($row[0]);
     $stmt->close();
-    if ($count !== 0) return EXISTERROR;
+    if ($count !== 0) return EXISTSERROR;
+    return NOERROR;
+}
+function checkIfGenreExists($connection, $genre) {
+    if (empty($genre)) return EMPTYERROR;
+    $stmt = $connection->prepare("SELECT count(*) FROM genres where genre = ?");
+    $stmt->bind_param("s", $genre);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_array();
+    $count = intval($row[0]);
+    $stmt->close();
+    if ($count !== 0) return EXISTSERROR;
     return NOERROR;
 }
 function countConsoles($connection, $ownerId) {
@@ -113,7 +130,7 @@ function getConsolesPagination($connection, $ownerId, $init, $search = '') {
     return $result;
 }
 function getGenres($connection, $search = '') {
-    $sql = "SELECT id, genre, icon FROM genres WHERE 1=1";
+    $sql = "SELECT id, genre, image FROM genres WHERE 1=1";
     if (!empty($search)) {
         $tmp = " AND (genre LIKE ?)";
         $search = "%".$search."%";
@@ -165,6 +182,13 @@ function deleteConsole($connection, $consoleId, $ownerId) {
     $sql = "DELETE FROM consoles WHERE id = ? AND owner_id = ?";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param('ii',$consoleId, $ownerId);
+    $stmt->execute();
+    $stmt->close();
+}
+function deleteGenre($connection, $consoleId) {
+    $sql = "DELETE FROM genres WHERE id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param('ii',$consoleId);
     $stmt->execute();
     $stmt->close();
 }

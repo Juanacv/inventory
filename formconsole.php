@@ -1,8 +1,9 @@
 <?php
-require_once "database.php";
-require_once "helpers.php";
-require_once "session.php";
 require_once "opts.php";
+require_once "helpers.php";
+require_once "database.php";
+require_once "session.php";
+require_once "profile.php";
 ?>
 <!doctype html>
 <html lang="es">
@@ -10,17 +11,12 @@ require_once "opts.php";
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.tailwindcss.com"></script>
 	<link href="./css/output.css" rel="stylesheet">
 </head>
 <body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
-    <?php 
-        $profile = checkSession($connectionData);
-    ?>
     <div class="w-full">
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-        <?php if (!empty($profile)) {
-            $portrait = PORTRAITSDIR.$profile['portrait'];
+        <?php       
             include_once "processconsole.php";           
             if (!empty($_POST)) {
                 $row['consolename'] = $_POST['consolename'];
@@ -45,8 +41,8 @@ require_once "opts.php";
                     </div>
                 </div>        
                 <?php  $_SESSION['highlight'] = FORMCONSOLE; 
-                $_SESSION['urlform'] = $forms[CONSOLE][0];
-                $_SESSION['tagform'] = $forms[CONSOLE][1];
+                $_SESSION['urlform'] = $forms[CONSOLES][0];
+                $_SESSION['tagform'] = $forms[CONSOLES][1];
                 include_once "navside.php"; ?> 
             </div>
             <div class="flex flex-col flex-1 overflow-hidden">
@@ -65,21 +61,21 @@ require_once "opts.php";
                                     <form class="w-full max-w-lg p-1" action="<?php echo $_SERVER["PHP_SELF"];?>?console=<?php echo isset($_GET['console']) ? $_GET['console']  : "";?>" enctype="multipart/form-data" method="POST">
                                         <div class="flex flex-wrap -mx-3 mb-6">
                                             <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="consolename">
                                                 Nombre consola
                                             </label>
                                             <input class="appearance-none block w-full bg-gray-200 text-gray-700 border <?php if (!empty($messages["consolename"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="consolename" name="consolename" value="<?php echo isset($row['consolename']) ? $row['consolename'] : "";?>" type="text" placeholder="Super Nintendo">
                                             <p class="text-red-500 text-xs italic"><?php echo $messages['consolename'] ?></p>
                                             </div>
                                             <div class="w-full md:w-1/3 px-3">
-                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="price">
                                                 Precio adquisición
                                             </label>
                                             <input class="appearance-none block w-full bg-gray-200 text-gray-700 border <?php if (!empty($messages["price"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" id="price" name="price" type="number" min="0" max="100000" value="<?php echo isset($row['price']) ? $row['price'] : "";?>" placeholder="10">
                                             <p class="text-red-500 text-xs italic"><?php echo $messages['price'] ?></p>
                                             </div>
                                             <div class="w-full md:w-1/3 px-3">
-                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="maker">
                                                 Fabricante
                                             </label>
                                             <input class="appearance-none block w-full bg-gray-200 text-gray-700 border <?php if (!empty($messages["maker"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" id="maker" name="maker" value="<?php echo isset($row['maker']) ? $row['maker'] : "";?>" type="text" placeholder="Nintendo">
@@ -88,25 +84,19 @@ require_once "opts.php";
                                         </div>
                                         <div class="flex flex-wrap -mx-3 mb-6">
                                             <div class="w-full px-3">
-                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                                                Imagen
-                                            </label>
-                                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border <?php if (!empty($messages["consoleimage"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="image" name="image" type="file">
-                                            <p class="mt-1 text-sm text-black-500 dark:text-black-300" id="file_input_help">PNG, JPG, JPEG (MAX.1000x1000px).</p>
-                                            <p class="text-red-500 text-xs italic"><?php echo $messages['consoleimage'] ?></p>  
-                                            <?php if (isset($row['image'])) { ?><input type="hidden" name="oldimage" value="<?php echo $row['image']; ?>"><?php } ?>
-                                        </div>
+                                                <?php include_once "imageinput.php"?>
+                                            </div>
                                         </div>
                                         <div class="flex flex-wrap -mx-3 mb-2">
                                             <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+                                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="dateadquisition">
                                                     Fecha adquisición
                                                 </label>
                                                 <input class="appearance-none block w-full bg-gray-200 text-gray-700 border <?php if (!empty($messages["dateadquisition"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" id="dateadquisiton" name="dateadquisition" value="<?php echo isset($row['dateadquisition']) ? date('Y-m-d',strtotime($row['dateadquisition'])) : "";?>" type="date" placeholder="">                                                
                                                 <p class="text-red-500 text-xs italic"><?php echo $messages["dateadquisition"]; ?></p>
                                             </div>
                                             <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
-                                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+                                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="comment">
                                                     Comentarios
                                                 </label>
                                                 <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border <?php if (!empty($messages["comment"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" id="comment" name="comment"  placeholder="Comentarios"><?php echo isset($row['comment']) ? $row['comment'] : ""; ?></textarea>
@@ -127,9 +117,6 @@ require_once "opts.php";
                 </main>
             </div>
         </div>
-        <?php } else { 
-            include_once "error.php";
-        } ?>
     </div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php
 require_once "opts.php";
-require_once "database.php";
 require_once "helpers.php";
+require_once "database.php";
 
 if (isset($_POST['sent'])) {
   $username = filtering($_POST['username']);
@@ -39,7 +39,7 @@ if (isset($_POST['sent'])) {
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="./js/tailwind.js"></script>
         <link href="./css/output.css" rel="stylesheet">
     </head>
     <body>

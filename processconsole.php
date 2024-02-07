@@ -23,9 +23,9 @@ if (isset($_POST['consolename']) && isset($_SESSION['user'])) {
     if ($result === FALSE)  $result = INVALIDDATE;
     if (isset($dateAdquisitionErrors[$result])) $messages['dateadquisition'] = $dateAdquisitionErrors[$result];
     $result = uploadFile(CONSOLESDIR);
-    if (is_int($result) && isset($imageErrors[$result])) $messages["consoleimage"] = $imageErrors[$result];
-    if (empty($messages['consolename']) && empty($messages['dateadquisition']) && empty($messages['price'])
-    && empty($messages['consoleimage']) && empty($messages['comment'])) {
+    if (is_int($result) && isset($imageErrors[$result])) $messages["image"] = $imageErrors[$result];
+    if (empty($messages['image']) && empty($messages['dateadquisition']) && empty($messages['price'])
+    && empty($messages['image']) && empty($messages['comment'])) {
         if (!isset($_POST['consoleid'])) {
             setConsole($connection, $consoleName, $maker, $price, $result, $comment, $dateAdquisition, $id);
         } else {

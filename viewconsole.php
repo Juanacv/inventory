@@ -10,7 +10,7 @@ require_once "opts.php";
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./js/tailwind.js"></script>
 	<link href="./css/output.css" rel="stylesheet">  
 </head>
 <body class="flex items-center justify-center h-screen">
@@ -25,7 +25,7 @@ require_once "opts.php";
                 <small class="text-neutral-500 dark:text-neutral-400">Fecha adqusición: <?php echo date('d-m-Y',strtotime($row['dateadquisition']));?></small>
             </div>
             <div class="w-1/3 flex-shrink-0">
-                <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="getimages.php?image=<?php echo $profile['portrait'];?>&type=<?php echo PORTRAITS;?>"
+                <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="getimages.php?image=<?php echo $profile['image'];?>&type=<?php echo PORTRAITS;?>"
                     alt="<?php echo $profile['username'];?>" title="<?php echo $profile['username'];?>">
             </div>            
         </div>

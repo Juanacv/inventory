@@ -1,7 +1,7 @@
 <?php
 require_once "opts.php";
-require_once "database.php";
 require_once "helpers.php";
+require_once "database.php";
 if (isset($_POST['sent'])) {
   $username = filtering($_POST['username']);
   $password = $_POST['password'];
@@ -16,9 +16,9 @@ if (isset($_POST['sent'])) {
   $messages["repassword"] = checkRepassword($password, $repassword);
   if (isset($repasswordErrors[$result])) $messages['repassword'] = $repasswordErrors[$result];
   $result = uploadFile(PORTRAITSDIR);
-  if (is_int($result) && isset($imageErrors[$result])) $messages["portrait"] = $imageErrors[$result];
+  if (is_int($result) && isset($imageErrors[$result])) $messages["image"] = $imageErrors[$result];
   if (empty($messages['username']) && empty($messages['password']) && empty($messages['repassword'])
-  && empty($messages['portrait'])) {
+  && empty($messages['image'])) {
     $hash = encryptPassword($password);
     setUser($connection, $username, $hash, $result);
     $connection->close();
@@ -35,7 +35,7 @@ if (isset($_POST['sent'])) {
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="./js/tailwind.js"></script>
         <link href="./css/output.css" rel="stylesheet">
     </head>
     <body>
@@ -68,7 +68,7 @@ if (isset($_POST['sent'])) {
           </label>          
           <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="image" name="image" type="file">
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG (MAX.1000x1000px).</p>
-          <p class="text-red-500 text-xs italic"><?php echo $messages["portrait"]; ?></p>
+          <p class="text-red-500 text-xs italic"><?php echo $messages["image"]; ?></p>
         </div>           
         <input type="hidden" name="sent" value="1">
         <div class="flex items-center justify-between">

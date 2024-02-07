@@ -1,8 +1,9 @@
-<?php
+<?php 
 require_once "opts.php";
-require_once "database.php";
 require_once "helpers.php";
+require_once "database.php";
 require_once "session.php";
+require_once "profile.php";
 ?>
 <!doctype html>
 <html lang="es">
@@ -10,16 +11,12 @@ require_once "session.php";
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.tailwindcss.com"></script>
 	<link href="./css/output.css" rel="stylesheet">
 </head>
 <body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
-    <?php 
-        $profile = checkSession($connectionData);
-    ?>
     <div class="w-full">
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-        <?php if (!empty($profile)) {
+        <?php 
             include_once "processconsoleslist.php";
             include_once "deleteconsole.php";
         ?>
@@ -37,9 +34,9 @@ require_once "session.php";
                         <span class="mx-2 text-2xl font-semibold text-white">Inventario</span>
                     </div>
                 </div>
-                <?php $_SESSION['highlight'] = CONSOLE; 
-                $_SESSION['urlform'] = $forms[CONSOLE][0];
-                $_SESSION['tagform'] = $forms[CONSOLE][1];
+                <?php $_SESSION['highlight'] = CONSOLES; 
+                $_SESSION['urlform'] = $forms[CONSOLES][0];
+                $_SESSION['tagform'] = $forms[CONSOLES][1];
                 include_once "navside.php"; ?>                
             </div>
             <div class="flex flex-col flex-1 overflow-hidden">
@@ -206,9 +203,6 @@ require_once "session.php";
                 </main>
             </div>
         </div>
-        <?php } else { 
-            include_once "error.php";
-        } ?>
     </div>
     <script type="application/javascript">
         window.onload = function() {
