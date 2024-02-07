@@ -116,8 +116,7 @@ require_once "profile.php";
                                             </label>
                                             <input class="appearance-none block mx-2 w-54 bg-gray-200 text-gray-700 border <?php if (!empty($messages["genre"])) { echo "border-red-500"; } else { echo "border-gray-300 focus:border-gray-500"; }; ?> rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" id="genre" name="consolename" value="<?php echo isset($row['genre']) ? $row['genre'] : "";?>" type="text" placeholder="Estrategia">
                                             <p class="text-red-500 text-xs italic"><?php echo $messages['genre'] ?></p>
-
-    
+                                            <?php include_once "imageinput.php" ?>
                                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                                             Añadir
                                             </button>       
