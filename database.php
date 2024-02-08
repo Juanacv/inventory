@@ -47,17 +47,16 @@ function setUser($connection, $username, $hash, $portrait) {
     $stmt->close();
 }
 function setConsole($connection, $consoleName, $maker, $price, $image, $comment, $dateAdquisition, $ownerId) {
-    $sql = "INSERT INTO consoles (consolename, maker, price, image, comment, dateadquisition, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO consoles (consolename, maker, price, image, comment, dateadquisition, ownerid) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param('ssdsssi',$consoleName, $maker, $price, $image, $comment, $dateAdquisition, $ownerId);
     $stmt->execute();
     $stmt->close();
 }
-function updateConsoleData($connection, $consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id, $oldImage) {
-    deleteImage(CONSOLESDIR.$oldImage);
-    $sql = "UPDATE consoles SET consolename=?, maker=?, price=?, image=?, comment=?, dateadquisition=? WHERE id = ?";
+function setVideogame($connection, $videogamename, $console, $genre, $image, $comment, $digital, $played, $price, $dateAdquisition, $ownerId) {
+    $sql = "INSERT INTO videogames (videogamename, console, genre, image, comment, digital, played, price, dateadquisition, ownerid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param('ssdsssi', $consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id);
+    $stmt->bind_param('siissiidsi',$videogamename, $console, $genre, $image, $comment, $digital, $played, $price, $dateAdquisition, $ownerId);
     $stmt->execute();
     $stmt->close();
 }
@@ -67,6 +66,22 @@ function setGenre($connection, $genre, $image) {
     $stmt->bind_param('ss', $genre, $image);
     $stmt->execute();
     $stmt->close();
+}
+function updateConsoleData($connection, $consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id, $oldImage, $ownerId) {    
+    $sql = "UPDATE consoles SET consolename=?, maker=?, price=?, image=?, comment=?, dateadquisition=? WHERE id = ? ANd ownerid = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param('ssdsssii', $consoleName, $maker, $price, $image, $comment, $dateAdquisition, $id, $ownerId);
+    $stmt->execute();
+    $stmt->close();
+    deleteImage(CONSOLESDIR.$oldImage);
+}
+function updateVideogame($connection, $videogamename, $console, $genre, $image, $comment, $digital, $played, $price, $dateAdquisition, $id, $oldImage, $ownerId) {
+    $sql = "UPDATE videogames SET videogames videogamename=?, console=?, genre=?, image=?, comment=?, digital=?, played=?, price=?, dateadquisition=? WHERE id = ? AND ownerid = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param('siissiidsii',$videogamename, $console, $genre, $image, $comment, $digital, $played, $price, $dateAdquisition, $id, $ownerId);
+    $stmt->execute();
+    $stmt->close();
+    deleteImage(VIDEOGAMESDIR.$oldImage);
 }
 function checkIfUserExists($connection, $username) {
     if (empty($username)) return EMPTYERROR;
@@ -82,7 +97,7 @@ function checkIfUserExists($connection, $username) {
 }
 function checkIfConsoleExists($connection, $consolename, $ownerId) {
     if (empty($consolename)) return EMPTYERROR;
-    $stmt = $connection->prepare("SELECT count(*) FROM consoles where consolename = ? and owner_id = ?");
+    $stmt = $connection->prepare("SELECT count(*) FROM consoles where consolename = ? and ownerid = ?");
     $stmt->bind_param("si", $consolename, $ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -105,7 +120,7 @@ function checkIfGenreExists($connection, $genre) {
     return NOERROR;
 }
 function countConsoles($connection, $ownerId) {
-    $stmt = $connection->prepare("SELECT count(*) FROM consoles where owner_id = ?");
+    $stmt = $connection->prepare("SELECT count(*) FROM consoles where ownerid = ?");
     $stmt->bind_param("i", $ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -123,8 +138,17 @@ function countGenres($connection) {
     $stmt->close();
     return $count;
 }
+function countVideogames($connection) {
+    $stmt = $connection->prepare("SELECT count(*) FROM videogames");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_array();
+    $count = intval($row[0]);
+    $stmt->close();
+    return $count;
+}
 function getConsolesPagination($connection, $ownerId, $init, $search = '') {
-    $sql = "SELECT id, consolename, maker, price, image, dateadquisition FROM consoles where owner_id = ?";
+    $sql = "SELECT id, consolename, maker, price, image, dateadquisition FROM consoles where ownerid = ?";
     if (!empty($search)) {
         $tmp = " AND (consolename LIKE ? OR maker LIKE ?)";
         $search = "%".$search."%";
@@ -159,8 +183,15 @@ function getConsoleById($connection, $consoleId) {
     $result = $stmt->get_result();
     return $result->fetch_assoc();
 }
+function getGenreById($connection, $genreId) {
+    $stmt = $connection->prepare("SELECT * FROM genres where id = ?");
+    $stmt->bind_param("i", $genreId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
 function getSumPricesConsoles($connection, $ownerId) {
-    $stmt = $connection->prepare("SELECT sum(price) FROM consoles where owner_id = ?");
+    $stmt = $connection->prepare("SELECT sum(price) FROM consoles where ownerid = ?");
     $stmt->bind_param("i", $ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -180,7 +211,7 @@ function countUsersWithSameConsole($connection, $consoleName) {
     return $count;
 }
 function getLastConsoleAdquisition($connection, $ownerId) {
-    $stmt = $connection->prepare("SELECT dateadquisition FROM consoles where owner_id = ? ORDER BY dateadquisition DESC LIMIT 1");
+    $stmt = $connection->prepare("SELECT dateadquisition FROM consoles where ownerid = ? ORDER BY dateadquisition DESC LIMIT 1");
     $stmt->bind_param("i", $ownerId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -188,16 +219,16 @@ function getLastConsoleAdquisition($connection, $ownerId) {
     return date('d-m-Y',strtotime($row[0]));
 }
 function deleteConsole($connection, $consoleId, $ownerId) {
-    $sql = "DELETE FROM consoles WHERE id = ? AND owner_id = ?";
+    $sql = "DELETE FROM consoles WHERE id = ? AND ownerid = ?";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param('ii',$consoleId, $ownerId);
     $stmt->execute();
     $stmt->close();
 }
-function deleteGenre($connection, $consoleId) {
+function deleteGenre($connection, $genreId) {
     $sql = "DELETE FROM genres WHERE id = ?";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param('i',$consoleId);
+    $stmt->bind_param('i',$genreId);
     $stmt->execute();
     $stmt->close();
 }

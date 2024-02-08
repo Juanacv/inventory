@@ -23,6 +23,7 @@ define('INVALIDDATE',2);
 define('PORTRAITSDIR','uploads/portraits/');
 define('CONSOLESDIR','uploads/consoles/');
 define('GENRESDIR','uploads/genres/');
+define('VIDEOGAMESDIR','uploads/genres/');
 define('IMAGEEXTENSIONS',array("jpg", "jpeg", "png", "svg"));
 define('MAXWIDTHPX',1000);
 define('MAXHEIGTHPX',1000);

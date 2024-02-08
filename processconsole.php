@@ -29,8 +29,8 @@ if (isset($_POST['consolename']) && isset($_SESSION['user'])) {
         if (!isset($_POST['consoleid'])) {
             setConsole($connection, $consoleName, $maker, $price, $result, $comment, $dateAdquisition, $id);
         } else {
-            $id = intval($_POST['consoleid']);
-            updateConsoleData($connection, $consoleName, $maker, $price, $result, $comment, $dateAdquisition, $id, $_POST['oldimage']);
+            $consoleId = intval($_POST['consoleid']);
+            updateConsoleData($connection, $consoleName, $maker, $price, $result, $comment, $dateAdquisition, $consoleId, $_POST['oldimage'], $id);
         }
         $connection->close();
         // Redirigir al usuario al registro
@@ -43,7 +43,7 @@ if (isset($_GET['console'])) {
     $row = getConsoleById($connection, intval($_GET['console']));
     $profile = array();
     if (strpos($_SERVER['PHP_SELF'],'view') !== FALSE) {
-        $profile = getProfile($connection, $row['owner_id']);
+        $profile = getProfile($connection, $row['ownerid']);
     }
     $connection->close();
 }
